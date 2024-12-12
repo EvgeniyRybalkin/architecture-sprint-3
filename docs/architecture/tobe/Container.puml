@@ -1,0 +1,30 @@
+@startuml
+title HotHouse Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь", "Пользователь системы 'Теплый Дом'")
+System_Ext(HouseHub, "Хаб умного дома", "управляет всеми устройствами умного дома")
+
+
+System(HotHouse, "система 'Теплый Дом'", "Система управления умным домом")
+
+Container_Boundary(HotHouse, "система 'Теплый Дом'") {
+  Container(ApiHotHouse, "API HotHouse", "", "управляет и маршрутизирует запросы к соответствующим микросервисам")
+  Container(Database, "База данных", "PostgreSQL", "хранит пользовательскую информацию")
+}
+
+System_Ext(WebApp, "Web приложение", "обрабатывает действия пользователя")
+
+
+Rel(user, WebApp, "использует систему")
+Rel(WebApp,ApiHotHouse, "взаимодействует с api")
+Rel(ApiHotHouse,Database, "чтение/запись данных")
+
+
+Rel(ApiHotHouse,HouseHub, "взаимодействие с устройствами")
+
+
+@enduml
