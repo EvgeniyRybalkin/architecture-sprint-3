@@ -8,6 +8,9 @@ top to bottom direction
 Person(user, "User", "Пользователь компании 'Теплый Дом'")
 System(HotHouse, "Система 'Теплый Дом'", "Система управления отоплением в доме")
 
-Rel(user, HotHouse, "Uses the system")
+System_Ext(HouseHeating, "Устройство 'Отопление'", "Система управления отоплением в доме")
+
+Rel(user, HotHouse, "Использование системы")
+Rel(HotHouse, HouseHeating, "Управление устройством")
 
 @enduml

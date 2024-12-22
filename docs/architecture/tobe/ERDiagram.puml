@@ -51,7 +51,7 @@ entity "TelemetryType" as tt {
   * description : text
 }
 
-u::user_id ||--.down.o{ h::user_id
+u::user_id }o--.down.o{ h::user_id
 d::house_id }o--.down.|| h::house_id
 d::type_id }--.down.|| devT::type_id
 d::device_id ||--.down.o{ td::device_id

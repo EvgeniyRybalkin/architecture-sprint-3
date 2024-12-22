@@ -18,12 +18,9 @@ Container(ApiHotHouse, "Сервис 'Отопление'", "Java, Spring") {
   Component(ApiGateway, "API Gateway", "Kong", "маршрутизирует запросы к соответствующим микросервисам")
 
   Component(HouseUser, "Сервис 'Пользователь'", "Java, Spring", "управляет профилем пользователя")
-  Component(HouseHeating, "Сервис 'Отопление'", "Java, Spring", "управляет отоплением дома")
-  Component(HouseLighting, "Сервис 'Освещение'", "Java, Spring", "управляет освещением дома")
-  Component(HouseGate, "Сервис 'Ворота'", "Java, Spring", "управляет автоматическими воротами")
+  Component(HouseDevices, "Сервис 'Устройства'", "Java, Spring", "управляет устройствами умного дома")
   Component(HouseTelemetry, "Сервис 'Телеметрия'", "Java, Spring", "следит за состоянием компонентов дома")
   Component(HouseController, "Сервис 'Управление'", "Java, Spring", "обеспечивает взаимодействие с умным домом")
-
 
   Component(RepositoryLayer, "Repository Layer", "Data access logic")
 }
@@ -32,22 +29,16 @@ Rel(WebApp,ApiGateway,"")
 
 
 Rel(ApiGateway,HouseUser,"вызов api")
-Rel(ApiGateway,HouseHeating,"вызов api")
-Rel(ApiGateway,HouseLighting,"вызов api")
-Rel(ApiGateway,HouseGate,"вызов api")
+Rel(ApiGateway,HouseDevices,"вызов api")
 Rel(ApiGateway,HouseTelemetry,"вызов api")
 
-Rel(HouseHeating,    HouseController,"Управление отоплением", "RESTful API")
-Rel(HouseLighting,   HouseController,"Управление освещением", "RESTful API")
-Rel(HouseGate,       HouseController,"Управление воротами", "RESTful API")
+Rel(HouseDevices,    HouseController,"Управление отоплением", "RESTful API")
 
 Rel(HouseTelemetry,  HouseHub,"Управление отоплением", "Async API")
 Rel(HouseController,  HouseHub,"Управление отоплением", "RESTful API")
 
 Rel(HouseUser,RepositoryLayer,"Чтение/запись")
-Rel(HouseHeating,RepositoryLayer,"Чтение/запись")
-Rel(HouseLighting,RepositoryLayer,"Чтение/запись")
-Rel(HouseGate,RepositoryLayer,"Чтение/запись")
+Rel(HouseDevices,RepositoryLayer,"Чтение/запись")
 Rel(HouseTelemetry,RepositoryLayer,"Чтение/запись")
 Rel(RepositoryLayer,Database,"Чтение/запись")
 @enduml
