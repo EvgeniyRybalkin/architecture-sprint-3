@@ -1,0 +1,60 @@
+@startuml
+
+title ER Diagram
+
+left to right direction
+
+entity "User" as u {
+  * user_id : number <<generated>>
+  __
+  * email : text
+  user_name : text
+  address : text
+}
+
+entity "House" as h {
+  * house_id : number <<generated>>
+  __
+  * user_id : number <<FK>>
+  address : text
+  description : text
+}
+
+entity "Device" as d {
+  * device_id : number <<generated>>
+  __
+  * type_id : number <<FK>>
+  * house_id : number <<FK>>
+  * serial_number : text
+  * status : boolean
+}
+
+entity "DeviceType" as devT {
+  * type_id : number <<generated>>
+  __
+  * device_type : text
+  description : text
+}
+
+entity "TelemetryData" as td {
+  __
+  * device_id : number
+  * event_time : timestamp
+  * type_id : number
+  * value : text
+}
+
+entity "TelemetryType" as tt {
+  * type_id : number <<generated>>
+  __
+  * telemetry_type : text
+  * description : text
+}
+
+u::user_id }o--.down.o{ h::user_id
+d::house_id }o--.down.|| h::house_id
+d::type_id }--.down.|| devT::type_id
+d::device_id ||--.down.o{ td::device_id
+td::type_id }o--.up.|| tt::type_id
+
+@enduml

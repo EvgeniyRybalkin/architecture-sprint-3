@@ -1,0 +1,44 @@
+@startuml
+title HotHome Component Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(HotHouse, "система 'Теплый Дом'") {
+    Container(ApiHotHouse, "API HotHouse", "", "управляет умным домом")
+    Container(Database, "База данных", "PostgreSQL", "хранит пользовательскую информацию")
+}
+
+System_Ext(WebApp, "Web приложение", "обрабатывает действия пользователя")
+System_Ext(HouseHub, "Хаб умного дома", "управляет всеми устройствами умного дома")
+
+
+Container(ApiHotHouse, "Сервис 'Отопление'", "Java, Spring") {
+  Component(ApiGateway, "API Gateway", "Kong", "маршрутизирует запросы к соответствующим микросервисам")
+
+  Component(HouseUser, "Сервис 'Пользователь'", "Java, Spring", "управляет профилем пользователя")
+  Component(HouseDevices, "Сервис 'Устройства'", "Java, Spring", "управляет устройствами умного дома")
+  Component(HouseTelemetry, "Сервис 'Телеметрия'", "Java, Spring", "следит за состоянием компонентов дома")
+  Component(HouseController, "Сервис 'Управление'", "Java, Spring", "обеспечивает взаимодействие с умным домом")
+
+  Component(RepositoryLayer, "Repository Layer", "Data access logic")
+}
+
+Rel(WebApp,ApiGateway,"")
+
+
+Rel(ApiGateway,HouseUser,"вызов api")
+Rel(ApiGateway,HouseDevices,"вызов api")
+Rel(ApiGateway,HouseTelemetry,"вызов api")
+
+Rel(HouseDevices,    HouseController,"Управление отоплением", "RESTful API")
+
+Rel(HouseTelemetry,  HouseHub,"Управление отоплением", "Async API")
+Rel(HouseController,  HouseHub,"Управление отоплением", "RESTful API")
+
+Rel(HouseUser,RepositoryLayer,"Чтение/запись")
+Rel(HouseDevices,RepositoryLayer,"Чтение/запись")
+Rel(HouseTelemetry,RepositoryLayer,"Чтение/запись")
+Rel(RepositoryLayer,Database,"Чтение/запись")
+@enduml
